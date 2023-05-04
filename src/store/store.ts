@@ -11,6 +11,25 @@ const { ipcRenderer } = require("electron");
 const store = new Store();
 // 定义并导出容器，第一个参数是容器id，必须唯一，用来将所有的容器
 // 挂载到根容器上
+
+
+
+
+
+
+
+
+
+
+function waitTime(time) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), time)
+  })
+}
+
+
+
+
 export const useTtsStore = defineStore("ttsStore", {
   // 定义state，用来存储状态的
   state: () => {
@@ -153,6 +172,7 @@ export const useTtsStore = defineStore("ttsStore", {
             ipcRenderer.send("log.info", `正在执行第${index + 1}次转换。。。`);
             const element = tasks[index];
             value.inputValue = element;
+            await waitTime(2000);
             const buffers: any = await getTTSData(
               value,
               this.formConfig.voiceSelect,
@@ -260,6 +280,7 @@ export const useTtsStore = defineStore("ttsStore", {
                   );
                   const element = tasks[index];
                   inps.inputValue = element;
+                  await waitTime(2000);
                   const buffers: any = await getTTSData(
                     inps,
                     this.formConfig.voiceSelect,
@@ -286,6 +307,7 @@ export const useTtsStore = defineStore("ttsStore", {
                 });
                 this.isLoading = false;
               } else {
+                await waitTime(2000);
                 await getTTSData(
                   inps,
                   this.formConfig.voiceSelect,
